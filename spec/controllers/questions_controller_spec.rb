@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
-  
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
 
@@ -107,8 +107,8 @@ RSpec.describe QuestionsController, type: :controller do
       it 'does not change question' do
         question.reload
 
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to start_with 'MyString'
+        expect(question.body).to start_with 'MyBody'
       end
 
       it 're-renders edit view' do
