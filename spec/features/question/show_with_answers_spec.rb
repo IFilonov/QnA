@@ -10,7 +10,7 @@ feature 'User can see question with answers', %q{
 
   scenario 'see question with answers' do
     visit question_path(question)
-    save_and_open_page
+
     expect(page).to have_content question.title
     expect(page).to have_content question.body
     answers.each do |answer|
