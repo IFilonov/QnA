@@ -5,7 +5,8 @@ feature 'User can see all questions', %q{
   As a regular user
   I'd like to see all questions
 } do
-  given!(:questions) { create_list(:question, 5) }
+  given(:user) { create(:user) }
+  given!(:questions) { create_list(:question, 5, user: user) }
 
   scenario 'see all questions' do
     visit questions_path

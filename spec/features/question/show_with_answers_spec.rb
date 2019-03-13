@@ -5,8 +5,9 @@ feature 'User can see question with answers', %q{
   As a regular user
   I'd like to see all questions
 } do
-  given!(:question) { create(:question) }
-  given!(:answers) { create_list(:answer, 5, question: question) }
+  given(:user) { create(:user) }  
+  given!(:question) { create(:question, user: user) }
+  given!(:answers) { create_list(:answer, 5, question: question, user: user) }
 
   scenario 'see question with answers' do
     visit question_path(question)

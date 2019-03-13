@@ -6,8 +6,8 @@ feature 'User can create answer', %q{
   I'd like to answer the question
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
-  given(:answer) { create(:answer, question: question) }
+  given(:question) { create(:question, user: user) }
+  given(:answer) { create(:answer, question: question, user: user) }
 
   scenario 'create an answer' do
 
@@ -34,6 +34,7 @@ feature 'User can create answer', %q{
     click_on 'Log in'
 
     visit question_path(question)
+
     click_on 'Answer'
 
     expect(page).to have_content "Body can't be blank"

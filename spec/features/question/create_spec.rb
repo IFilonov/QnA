@@ -6,7 +6,7 @@ feature 'User can create question', %q{
   I'd like to ask the question
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given(:question) { create(:question, user: user) }
 
   scenario 'Authenticated user asks a question' do
 
@@ -33,7 +33,7 @@ feature 'User can create question', %q{
     fill_in 'Password', with: user.password
 
     click_on 'Log in'
-    
+
     visit new_question_path
     click_on 'Ask'
 
