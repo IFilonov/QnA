@@ -10,11 +10,7 @@ feature 'User can delete answer', %q{
 
   scenario 'Authenticated user deletes his answer' do
 
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-
-    click_on 'Log in'
+    sign_in(user)
 
     visit new_question_path
     fill_in 'Title', with: question.title
@@ -34,11 +30,7 @@ feature 'User can delete answer', %q{
 
   scenario 'Authenticated user deletes not his answer with errors' do
 
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-
-    click_on 'Log in'
+    sign_in(user)
 
     visit new_question_path
     fill_in 'Title', with: question.title
@@ -51,11 +43,7 @@ feature 'User can delete answer', %q{
 
     click_on 'Log out'
 
-    visit new_user_session_path
-
-    fill_in 'Email', with: another_user.email
-    fill_in 'Password', with: another_user.password
-    click_on 'Log in'
+    sign_in(another_user)
 
     visit question_path(question)
 

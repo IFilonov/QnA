@@ -11,11 +11,7 @@ feature 'User can create answer', %q{
 
   scenario 'create an answer' do
 
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-
-    click_on 'Log in'
+    sign_in(user)
 
     visit question_path(question)
     fill_in 'Body', with: answer.body
@@ -27,11 +23,7 @@ feature 'User can create answer', %q{
 
   scenario 'make an answer with errors' do
 
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-
-    click_on 'Log in'
+    sign_in(user)
 
     visit question_path(question)
 

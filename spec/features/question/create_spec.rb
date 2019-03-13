@@ -10,11 +10,7 @@ feature 'User can create question', %q{
 
   scenario 'Authenticated user asks a question' do
 
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-
-    click_on 'Log in'
+    sign_in(user)
 
     visit new_question_path
     fill_in 'Title', with: question.title
@@ -28,11 +24,7 @@ feature 'User can create question', %q{
 
   scenario 'asks a question by authenticated user with errors' do
 
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-
-    click_on 'Log in'
+    sign_in(user)
 
     visit new_question_path
     click_on 'Ask'
