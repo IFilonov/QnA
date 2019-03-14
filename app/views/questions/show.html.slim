@@ -1,9 +1,7 @@
 h1= @question.title
 p= @question.body
-
-= link_to "Delete", question_path(@question), method: :delete
+- if current_user && current_user.author_of?(@question)
+  = link_to "Delete question", question_path(@question), method: :delete
 
 = render 'answers/form'
 = render @question.answers
-br
-= link_to "Log out", destroy_user_session_path, method: :delete

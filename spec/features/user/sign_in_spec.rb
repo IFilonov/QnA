@@ -5,7 +5,6 @@ require 'rails_helper'
   As an unauthenticated user
   I'd like to be able to sign in
 } do
-
   given(:user) { User.create!(email: 'user@test.com', password: '12345678') }
 
   scenario 'Registered user tries to sign in' do

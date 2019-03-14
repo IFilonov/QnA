@@ -8,8 +8,8 @@ FactoryBot.define do
   end
 
   factory :question do
-    title { generate :title }
-    body { generate :body }
+    title
+    body
   end
 
   trait :invalid do

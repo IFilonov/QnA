@@ -3,10 +3,6 @@ class AnswersController < ApplicationController
   before_action :find_question, only: [:create]
   before_action :find_answer, only: [:destroy]
 
-  def new
-    @answer = Answer.new
-  end
-
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
@@ -18,12 +14,9 @@ class AnswersController < ApplicationController
     end
   end
 
-  def show
-  end
-
   def destroy
     notice = ""
-    if current_user == @answer.user
+    if current_user.author_of?(@answer)
       @answer.destroy
       notice = 'Answer successfully deleted.'
     else

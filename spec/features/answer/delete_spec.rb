@@ -7,48 +7,30 @@ feature 'User can delete answer', %q{
   given(:user) { create(:user) }
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
+  given!(:answer) { create(:answer, question: question, user: user) }
 
   scenario 'Authenticated user deletes his answer' do
-
     sign_in(user)
-
-    visit new_question_path
-    fill_in 'Title', with: question.title
-    fill_in 'Body', with: question.body
-    click_on 'Ask'
-
-    visit question_path(question)
-    fill_in 'Body', with: "Answer body"
-    click_on 'Answer'
 
     visit question_path(question)
 
     click_on 'Delete answer'
 
     expect(page).to have_content 'Answer successfully deleted.'
+    expect(page).not_to have_content answer.body
   end
 
-  scenario 'Authenticated user deletes not his answer with errors' do
-
-    sign_in(user)
-
-    visit new_question_path
-    fill_in 'Title', with: question.title
-    fill_in 'Body', with: question.body
-    click_on 'Ask'
-
-    visit question_path(question)
-    fill_in 'Body', with: "Answer body"
-    click_on 'Answer'
-
-    click_on 'Log out'
-
+  scenario 'Authenticated user could not delete not his answer' do
     sign_in(another_user)
 
     visit question_path(question)
 
-    click_on 'Delete answer'
+    expect(page).not_to have_content 'Delete answer'
+  end
 
-    expect(page).to have_content 'Only author can delete answer.'
+  scenario 'Unauthenticated user could not delete any answer' do
+    visit question_path(question)
+
+    expect(page).not_to have_content 'Delete answer'
   end
 end

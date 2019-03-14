@@ -9,7 +9,6 @@ feature 'User can create question', %q{
   given(:question) { create(:question, user: user) }
 
   scenario 'Authenticated user asks a question' do
-
     sign_in(user)
 
     visit new_question_path
@@ -23,7 +22,6 @@ feature 'User can create question', %q{
   end
 
   scenario 'asks a question by authenticated user with errors' do
-
     sign_in(user)
 
     visit new_question_path

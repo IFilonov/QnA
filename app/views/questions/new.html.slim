@@ -1,10 +1,4 @@
-= @question
-br
-= @question.errors.count
-br
-= @question.inspect
-br
-= @question.body
+h1 New question
 = render 'shared/errors', resource: @question
 
 = form_with model: @question, local: true do |f|
