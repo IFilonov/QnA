@@ -22,12 +22,12 @@ feature 'User can delete question', %q{
     sign_in(another_user)
     visit question_path(question)
 
-    expect(page).not_to have_content 'Delete question'
+    expect(page).not_to have_link 'Delete question'
   end
 
   scenario 'Unauthenticated user deletes any question with errors' do
     visit question_path(question)
 
-    expect(page).not_to have_content 'Delete question'
+    expect(page).not_to have_link 'Delete question'
   end
 end

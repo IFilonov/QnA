@@ -25,12 +25,12 @@ feature 'User can delete answer', %q{
 
     visit question_path(question)
 
-    expect(page).not_to have_content 'Delete answer'
+    expect(page).not_to have_link 'Delete answer'
   end
 
   scenario 'Unauthenticated user could not delete any answer' do
     visit question_path(question)
 
-    expect(page).not_to have_content 'Delete answer'
+    expect(page).not_to have_link 'Delete answer'
   end
 end

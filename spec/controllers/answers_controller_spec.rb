@@ -20,7 +20,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'question assigned with logged in user' do
         post :create, params: { answer: attributes_for(:answer), question_id: question }
-        expect(assigns(:answer).user).to eq answer.user
+        expect(assigns(:answer).user).to eq user
       end
     end
 
@@ -43,7 +43,7 @@ RSpec.describe AnswersController, type: :controller do
       before { sign_in(user) }
 
       it 'delete the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to question show' do
