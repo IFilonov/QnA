@@ -1,0 +1,6 @@
+= form_with model: @question do |f|
+  = f.label :title
+  = f.text_area :title, readonly: true, id: 'question-title'
+  = f.label :body
+  = f.text_area :body, readonly: true, id: 'question-body'
+  = f.submit 'Save', id: 'question-update-submit', class: 'hidden'
