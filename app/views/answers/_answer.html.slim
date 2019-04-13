@@ -1,3 +1,4 @@
+.flash
 div class = "answer-#{answer.id}"
   div class = "answer-#{answer.id}-errors"
   p= answer.body
@@ -11,4 +12,4 @@ div class = "answer-#{answer.id}"
     - if current_user&.author_of?(answer)
       = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
       br
-      = link_to 'Delete answer', answer_path(answer), method: :delete
+      = link_to 'Delete answer', answer_path(answer), class: 'destoy-answer-link', remote: true, method: :delete
