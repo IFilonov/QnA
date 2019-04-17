@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
-  before_action :find_answer, only: [:destroy, :update]
+  before_action :find_answer, only: [:destroy, :update, :best]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -22,6 +22,12 @@ class AnswersController < ApplicationController
   def update
     @answer.update(answer_params)
     @question = @answer.question
+  end
+
+  def best
+    best = @answer.best
+    @answer.erase_bests
+    @answer.best! if !best
   end
 
   private

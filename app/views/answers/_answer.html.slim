@@ -2,7 +2,12 @@
 div class = "answer-#{answer.id}"
   div class = "answer-#{answer.id}-errors"
   p= answer.body
-
+  .best
+    - if current_user&.author_of?(answer)
+      = link_to(best_answer_path(answer), id: "best-link#{answer.id}", method: :patch, remote: true) do
+        span= "Best"
+        = check_box_tag("best-checkbox#{answer.id}", answer.id, answer.best, { autocomplete: "off" } )
+  br
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
     = render 'shared/errors', resource: answer
     = f.label :body, 'Your answer'

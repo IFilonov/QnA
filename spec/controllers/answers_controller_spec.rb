@@ -43,12 +43,12 @@ RSpec.describe AnswersController, type: :controller do
       before { sign_in(user) }
 
       it 'delete the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to question show' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -82,9 +82,9 @@ RSpec.describe AnswersController, type: :controller do
         patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
         expect(response).to render_template :update
       end
-     end
+    end
 
-     context 'with invalid attributes' do
+    context 'with invalid attributes' do
       before { sign_in(user) }
 
       it 'does not change answer attributes' do
@@ -96,6 +96,24 @@ RSpec.describe AnswersController, type: :controller do
       it 'renders update view' do
         patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid_answer) }, format: :js
         expect(response).to render_template :update
+      end
+    end
+  end
+
+  describe 'PATCH #best' do
+    let(:author) { create(:user) }
+    let!(:answer) { create(:answer, question: question, user: author) }
+
+    context 'user an author' do
+      before { sign_in(author) }
+      before { patch :best, params: { id: answer, format: :js } }
+
+      it 'assigns the request answer to @answer' do
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'render answer best' do
+        expect(response).to render_template :best
       end
     end
   end
