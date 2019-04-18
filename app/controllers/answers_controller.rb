@@ -30,9 +30,12 @@ class AnswersController < ApplicationController
   end
 
   def best
-    best = @answer.best
-    @answer.erase_bests
-    @answer.best! if !best
+    if current_user.author_of?(@answer.question)
+      @answer.best!
+    else
+      flash[:notice] = 'Only author of question can choose best answer.'
+      redirect_to @answer.question
+    end
   end
 
   private

@@ -19,24 +19,11 @@ RSpec.describe Answer, type: :model do
       expect(answer).to be_best
     end
 
-    it 'should erase all bests marks of answers' do
-      answer.best!
-      another_answer.best!
-
-      answer.erase_bests
-      another_answer.reload
-      answer.reload
-
-      expect(another_answer).to_not be_best
-      expect(answer).to_not be_best
-    end
-
     it 'only one answer can be the best' do
       another_answer = create(:answer, question: question, user: user, best: true)
 
       expect(another_answer).to be_best
 
-      answer.erase_bests
       answer.best!
       another_answer.reload
 

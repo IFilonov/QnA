@@ -118,19 +118,32 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #best' do
-    let(:author) { create(:user) }
-    let!(:answer) { create(:answer, question: question, user: author) }
-
-    context 'user an author' do
-      before { sign_in(author) }
+    context 'user as an author of question' do
+      before { sign_in(user) }
       before { patch :best, params: { id: answer, format: :js } }
 
-      it 'assigns the request answer to @answer' do
-        expect(assigns(:answer)).to eq answer
+      it 'make the answer the best' do
+        answer.reload
+        expect(answer.best).to eq true
       end
 
       it 'render answer best' do
         expect(response).to render_template :best
+      end
+    end
+
+    context 'user a not an author of question' do
+      let!(:another_user) { create(:user) }
+      before { sign_in(another_user) }
+      before { patch :best, params: { id: answer, format: :js } }
+
+      it 'does not make the answer the best' do
+        answer.reload
+        expect(answer.best).to_not eq true
+      end
+
+      it 'redirects to question path' do
+        expect(response).to redirect_to answer.question
       end
     end
   end

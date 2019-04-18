@@ -5,5 +5,5 @@
   $('.flash').html('');
   $('.flash').prepend('<%= flash_messages %>');
   <% flash.discard %>
-  $("<%= answer_id %>").hide();
+  $("<%= answer_id %>").remove();
 <% end %>

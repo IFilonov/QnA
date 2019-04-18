@@ -1,16 +1,15 @@
 class Answer < ApplicationRecord
-    belongs_to :question
-    belongs_to :user
-    validates :body, presence: true
+  belongs_to :question
+  belongs_to :user
+  validates :body, presence: true
 
-    default_scope -> { order('best desc, id') }
-    scope :best, -> { where best: true }
+  default_scope -> { order('best desc, id') }
+  scope :best, -> { where(best: true) }
 
-    def best!
+  def best!
+    ActiveRecord::Base.transaction do
+      question.answers.best.update_all(best: false)
       update!(best: true)
     end
-
-    def erase_bests
-      question.answers.best.update_all(best: false)
-    end
+  end
 end
