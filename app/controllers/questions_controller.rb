@@ -28,7 +28,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params)
+    if current_user.author_of?(@question)
+      @question.update(question_params)
+    else
+      redirect_to @question, notice: 'Only author can edit question'
+    end
   end
 
   def destroy
