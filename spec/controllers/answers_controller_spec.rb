@@ -98,6 +98,23 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    context 'when user is not an author' do
+      let(:another_user) { create(:user) }
+
+      before { sign_in(another_user) }
+
+      it 'cannot changes answer attributes' do
+        patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
+        answer.reload
+        expect(answer.body).to_not eq 'new body'
+      end
+
+      it 'redirect to answers question view' do
+        patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
+        expect(response).to redirect_to answer.question
+      end
+    end
   end
 
   describe 'PATCH #best' do

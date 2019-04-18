@@ -43,5 +43,10 @@ RSpec.describe Answer, type: :model do
       expect(answer).to be_best
       expect(another_answer).to_not be_best
     end
+
+    it 'best answer is first in list' do
+      another_answer.best!
+      expect(another_answer).to eq question.answers.first
+    end
   end
 end
