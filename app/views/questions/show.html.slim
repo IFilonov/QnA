@@ -3,8 +3,9 @@
 .question
   h3= "Question:"
   = render 'form'
-  - if @question.file.attached?
-    p= link_to @question.file.filename.to_s, url_for(@question.file)
+  - if @question.files.attached?
+    - @question.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
   - if current_user&.author_of?(@question)
     = link_to "Edit", '#', class: 'question-edit-link'
     br
