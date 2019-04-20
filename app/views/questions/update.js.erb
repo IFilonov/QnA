@@ -1,0 +1,7 @@
+$('.question-errors').html('<%= render 'shared/errors', resource: @question %>')
+<% if @question.persisted? %>
+  $('#question-update-submit').hide();
+  $('.question-edit-link').show();
+  $('#question-body').attr("readonly", true);
+  $('#question-title').attr("readonly", true);
+<% end %>

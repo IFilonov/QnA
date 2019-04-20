@@ -1,0 +1,3 @@
+<% answer_id = "#{@answer.id}" %>
+$('.answers').html('');
+$('.answers').append("<%= j render @answer.question.answers %>")

@@ -10,8 +10,8 @@ feature 'User can create question', %q{
 
   scenario 'Authenticated user asks a question' do
     sign_in(user)
-
     visit new_question_path
+
     fill_in 'Title', with: question.title
     fill_in 'Body', with: question.body
     click_on 'Ask'

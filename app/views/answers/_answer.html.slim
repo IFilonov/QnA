@@ -1,4 +1,20 @@
--if answer.persisted?
+.flash
+div class = "answer-#{answer.id}"
+  div class = "answer-#{answer.id}-errors"
   p= answer.body
-  - if current_user&.author_of?(answer)
-    = link_to 'Delete answer', answer_path(answer), method: :delete
+  .best
+    - if current_user&.author_of?(answer.question)
+      = link_to(best_answer_path(answer), id: "best-link#{answer.id}", method: :patch, remote: true) do
+        span= "Best"
+        = check_box_tag("best-checkbox#{answer.id}", answer.id, answer.best, { autocomplete: "off" } )
+  br
+  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+    = render 'shared/errors', resource: answer
+    = f.label :body, 'Your answer'
+    = f.text_area :body
+    = f.submit 'Save'
+  - if answer.persisted?
+    - if current_user&.author_of?(answer)
+      = link_to 'Edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      br
+      = link_to 'Delete answer', answer_path(answer), class: 'destoy-answer-link', remote: true, method: :delete
