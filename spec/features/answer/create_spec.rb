@@ -18,6 +18,20 @@ feature 'User can create answer', %q{
     expect(page).to have_content "Answer body"
   end
 
+  scenario 'Authenticated user can answer with many attached file', js: true do
+    sign_in(user)
+    visit question_path(question)
+
+    fill_in 'Body', with: "Answer body"
+
+    attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb","#{Rails.root}/spec/spec_helper.rb"]
+    click_on 'Answer'
+
+    expect(page).to have_link 'rails_helper.rb'
+    expect(page).to have_link 'spec_helper.rb'
+  end
+
+
   scenario 'make an answer with errors', js: true do
     sign_in(user)
 
