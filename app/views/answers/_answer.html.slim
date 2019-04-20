@@ -15,6 +15,10 @@ div class = "answer-#{answer.id}"
     = render 'shared/errors', resource: answer
     = f.label :body, 'Your answer'
     = f.text_area :body
+    p
+    = f.label :files, id: 'answer-file-label'
+    = f.file_field :files, id: 'answer-file-field', multiple: true
+    p
     = f.submit 'Save'
   - if answer.persisted?
     - if current_user&.author_of?(answer)
