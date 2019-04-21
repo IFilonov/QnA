@@ -4,6 +4,7 @@ $(document).on('turbolinks:load', function(){
        $('#question-update-submit').show();
        $('#question-file-label').show();
        $('#question-file-field').show();
+       $('.question-del-link').show();
        $('.question-edit-link').hide();
        $('#question-body').attr("readonly", false);
        $('#question-title').attr("readonly", false);

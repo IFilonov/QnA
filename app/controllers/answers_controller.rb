@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :find_question, only: [:create]
-  before_action :find_answer, only: [:destroy, :update, :best]
+  before_action :find_answer, only: [:destroy, :update, :best, :delete_file]
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -38,6 +38,15 @@ class AnswersController < ApplicationController
     end
   end
 
+  def delete_file
+    if current_user.author_of?(@answer)
+      @answer.files.attachments.find(params[:file_id]).purge
+      @answer.reload
+    else
+      redirect_to @answer.question, notice: 'Only author can delete question files.'
+    end
+  end
+
   private
 
   def find_question
@@ -49,6 +58,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, files:[])
+    params.require(:answer).permit(:body, :file_id, files:[])
   end
 end

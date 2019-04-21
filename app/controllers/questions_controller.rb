@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create edit update destroy]
-  before_action :find_question, only: [:show, :edit, :update, :destroy]
+  before_action :find_question, only: [:show, :edit, :update, :destroy, :delete_file]
 
   def index
     @questions = Question.all
@@ -15,6 +15,15 @@ class QuestionsController < ApplicationController
   end
 
   def edit
+  end
+
+  def delete_file
+    if current_user.author_of?(@question)
+        @question.files.attachments.find(params[:file_id]).purge
+        @question.reload
+    else
+      redirect_to @question, notice: 'Only author can delete question files.'
+    end
   end
 
   def create
@@ -51,6 +60,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files:[])
+    params.require(:question).permit(:title, :body, :file_id, files:[])
   end
 end

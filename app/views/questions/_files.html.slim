@@ -1,3 +1,5 @@
 - if @question.files.attached?
   - @question.files.each do |file|
     p= link_to file.filename.to_s, url_for(file)
+    = link_to('Delete', delete_file_question_path(@question, { file_id: file.id }),
+      class: 'question-del-link hidden', method: :delete, remote: true, id: "del-file#{file.id}")
