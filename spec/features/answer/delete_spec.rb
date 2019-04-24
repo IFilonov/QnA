@@ -33,37 +33,4 @@ feature 'User can delete answer', %q{
 
     expect(page).not_to have_link 'Delete answer'
   end
-
-  scenario 'Authenticated user deletes his answer files', js: true do
-    answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb")
-    answer.files.attach(io: File.open("#{Rails.root}/spec/spec_helper.rb"), filename: "spec_helper.rb")
-
-    sign_in(user)
-    visit question_path(question)
-
-    expect(page).to have_link 'rails_helper.rb'
-    expect(page).to have_link 'spec_helper.rb'
-
-    click_on 'Edit answer'
-
-    id = answer.files.first.id
-    click_on "del-file#{id}"
-    click_on "del-file#{id + 1}"
-
-    click_on 'Save'
-
-    expect(page).to_not have_link 'rails_helper.rb'
-    expect(page).to_not have_link 'spec_helper.rb'
-  end
-
-  scenario 'Unauthenticated user cannot delete question files', js: true do
-    answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb")
-    answer.files.attach(io: File.open("#{Rails.root}/spec/spec_helper.rb"), filename: "spec_helper.rb")
-
-    visit question_path(question)
-
-    id = answer.files.first.id
-    expect(page).to_not have_link "del-file#{id}"
-    expect(page).to_not have_link "del-file#{id + 1}"
-  end
 end

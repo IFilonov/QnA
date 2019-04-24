@@ -64,36 +64,6 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to redirect_to answer.question
       end
     end
-
-    context 'as an author' do
-      before { sign_in(user) }
-
-      it 'delete answer files' do
-        answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb")
-
-        expect do
-          delete :delete_file, params: { id: answer, file_id: answer.files.first.id }, format: :js
-        end.to change(ActiveStorage::Attachment, :count).by(-1)
-      end
-
-      it 'render delete_file template' do
-        answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb")
-
-        delete :delete_file, params: { id: answer, file_id: answer.files.first.id }, format: :js
-        expect(response).to render_template :delete_file
-      end
-    end
-
-    context 'user is not an author' do
-      before { sign_in(another_user) }
-
-      it 'delete the answer file' do
-        answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb")
-
-        expect { delete :delete_file, params: { id: answer, file_id: answer.files.first.id }, format: :js }.to_not change(ActiveStorage::Attachment, :count)
-        expect(response).to redirect_to answer.question
-      end
-    end
   end
 
   describe 'PATCH #update' do

@@ -16,7 +16,7 @@ div class = "answer-#{answer.id}"
     = f.text_area :body
     p
     = f.label :files, id: 'answer-file-label'
-    = f.file_field :files, id: 'answer-file-field', multiple: true
+    = f.file_field :files, id: 'answer-file-field', multiple: true, direct_upload: true
     p
     = f.submit 'Save'
   - if answer.persisted?
