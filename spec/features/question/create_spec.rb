@@ -21,6 +21,20 @@ feature 'User can create question', %q{
     expect(page).to have_content question.body
   end
 
+  scenario 'Authenticated user asks a question with many attached file' do
+    sign_in(user)
+    visit new_question_path
+
+    fill_in 'Title', with: question.title
+    fill_in 'Body', with: question.body
+
+    attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb","#{Rails.root}/spec/spec_helper.rb"]
+    click_on 'Ask'
+
+    expect(page).to have_link 'rails_helper.rb'
+    expect(page).to have_link 'spec_helper.rb'    
+  end
+
   scenario 'asks a question by authenticated user with errors' do
     sign_in(user)
 

@@ -3,6 +3,8 @@
 .question
   h3= "Question:"
   = render 'form'
+  .question_files
+    = render 'files'
   - if current_user&.author_of?(@question)
     = link_to "Edit", '#', class: 'question-edit-link'
     br

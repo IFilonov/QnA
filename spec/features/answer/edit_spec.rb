@@ -51,4 +51,31 @@ feature 'Only author can edit his answer', %q{
     end
     expect(page).to have_content "Body can't be blank"
   end
+
+  scenario 'author can add files when edit an answer', js: true do
+    sign_in(user)
+    visit question_path(question)
+    within '.answers' do
+      expect(page).to_not have_field 'answer-file-field'
+
+      click_on 'Edit'
+
+      expect(page).to have_field 'answer-file-field'
+    end
+  end
+
+  scenario 'edit an answer with many attached file', js: true do
+    sign_in(user)
+    visit question_path(question)
+    within '.answers' do
+
+      click_on 'Edit'
+
+      attach_file 'answer-file-field', ["#{Rails.root}/spec/rails_helper.rb","#{Rails.root}/spec/spec_helper.rb"]
+      click_on 'Save'
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
+    end
+  end
 end

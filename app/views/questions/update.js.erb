@@ -2,6 +2,10 @@ $('.question-errors').html('<%= render 'shared/errors', resource: @question %>')
 <% if @question.persisted? %>
   $('#question-update-submit').hide();
   $('.question-edit-link').show();
+  $('#question-file-label').hide();
+  $('#question-file-field').hide();
   $('#question-body').attr("readonly", true);
   $('#question-title').attr("readonly", true);
+  $('.question_files').html('');
+  $('.question_files').append("<%= j render partial: 'files', locals: { question: @question} %>");
 <% end %>
