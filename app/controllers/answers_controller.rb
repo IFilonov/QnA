@@ -45,10 +45,10 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
-    @answer = Answer.find(params[:id])
+    @answer = Answer.with_attached_files.find(params[:id])
   end
 
   def answer_params
-    params.require(:answer).permit(:body, files:[])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
   end
 end
