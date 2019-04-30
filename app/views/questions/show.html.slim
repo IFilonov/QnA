@@ -6,10 +6,7 @@
   .question_files
     = render 'files'
   .question_links
-    p Links:
-    ul
-      - @question.links.each do |link|
-        li= link_to link.name, link.url
+    = render 'links'
   - if current_user&.author_of?(@question)
     = link_to "Edit", '#', class: 'question-edit-link'
     br
@@ -18,4 +15,6 @@ h3= "Answers:"
 .answers
   = render @question.answers
 .answer-errors
-= render 'answers/form'
+.new_answer
+  - if current_user
+    = render 'answers/form'

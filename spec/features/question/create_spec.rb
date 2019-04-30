@@ -32,7 +32,7 @@ feature 'User can create question', %q{
     click_on 'Ask'
 
     expect(page).to have_link 'rails_helper.rb'
-    expect(page).to have_link 'spec_helper.rb'    
+    expect(page).to have_link 'spec_helper.rb'
   end
 
   scenario 'asks a question by authenticated user with errors' do

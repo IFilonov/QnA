@@ -15,7 +15,6 @@ div class = "answer-#{answer.id}"
         span= "Best"
         = check_box_tag("best-checkbox#{answer.id}", answer.id, answer.best, { autocomplete: "off" } )
   br
-  p = answer.links.count
   = render 'shared/errors', resource: answer
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
     = f.label :body, 'Your answer'
@@ -26,12 +25,9 @@ div class = "answer-#{answer.id}"
     p Links:
     p
       = f.fields_for :links do |l|
-        p
-          = l.label :name, 'Link name'
-          = l.text_field :name
-        p
-          = l.label :url
-          = l.text_field :url
+        = render 'shared/link_fields', f: l
+      .links
+        = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
     = f.submit 'Save'
   - if answer.persisted?
     - if current_user&.author_of?(answer)

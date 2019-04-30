@@ -11,13 +11,9 @@ h1 New question
   = f.label :files
   = f.file_field :files, multiple: true, direct_upload: true
   p Links:
-  p
+  #links
     = f.fields_for :links do |l|
-      p
-      = l.label :name, 'Link name'
-      = l.text_field :name
-      p
-      = l.label :url
-      = l.text_field :url
-  p
+      = render 'shared/link_fields', f: l
+    .links
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
   = f.submit 'Ask'
