@@ -8,8 +8,10 @@ require 'rails_helper'
 
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given(:gist_url) { 'https://gist.github.com/IFilonov/7d817a0aa1f1d0a8755135aacf01f72c' }
-  given(:gist_url2) { 'https://gist.github.com/IFilonov/e1b5625045959a88a905ad8d5b9720d8' }
+  given(:any_url) { 'https://www.google.com/' }
+  given(:gist_url) { 'https://gist.github.com/IFilonov/4590d07e33fc2984c8cb92e9167590b8' }
+  given(:bad_url) { 'any url' }
+  given!(:gist_content) { 'Example gist content' }
 
   background do
     sign_in(user)
@@ -21,12 +23,12 @@ require 'rails_helper'
       click_on 'Add link'
 
       link_names = all('.link-name')
-      link_names.first.fill_in(with: 'My gist')
-      link_names.last.fill_in(with: 'My gist2')
+      link_names.first.fill_in(with: 'My link')
+      link_names.last.fill_in(with: 'My gist')
 
       link_urls = all('.link-url')
-      link_urls.first.fill_in(with: gist_url)
-      link_urls.last.fill_in(with: gist_url2)
+      link_urls.first.fill_in(with: any_url)
+      link_urls.last.fill_in(with: gist_url)
     end
   end
 
@@ -34,8 +36,8 @@ require 'rails_helper'
     click_on 'Answer'
 
     within '.answers' do
-      expect(page).to have_link 'My gist', href: gist_url
-      expect(page).to have_link 'My gist2', href: gist_url2
+      expect(page).to have_link 'My link', href: any_url
+      expect(page).to have_content gist_content
     end
   end
 
@@ -45,8 +47,21 @@ require 'rails_helper'
       remove_links.first.click
       remove_links.last.click
 
-      expect(page).to_not have_content 'My gist'
-      expect(page).to_not have_content 'My gist2'
+      expect(page).to_not have_content 'My link'
+      expect(page).to_not have_content gist_content
     end
+  end
+
+  scenario 'User cannot adds bad link', js: true do
+    within '.new_answer' do
+      link_names = all('.link-name')
+      link_names.first.fill_in(with: 'Bad url')
+      link_urls = all('.link-url')
+      link_urls.first.fill_in(with: bad_url)
+    end
+
+    click_on 'Answer'
+
+    expect(page).to have_content 'Links url invalid format'
   end
 end

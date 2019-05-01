@@ -6,7 +6,10 @@ div class = "answer-#{answer.id}"
   p Links:
   ul
     - answer.links.each do |link|
-      li= link_to link.name, link.url
+      - if link.gist?
+        = link.gist_content
+      - else
+        li= link_to link.name, link.url
   .answer_files
     = render partial: "/answers/files", locals: { answer: answer }
   .best

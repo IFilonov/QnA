@@ -6,9 +6,11 @@ feature 'User can add links to question', %q{
   I'd like to be able to add links
 } do
   given(:user) { create(:user) }
-  given(:gist_url) { 'https://gist.github.com/IFilonov/7d817a0aa1f1d0a8755135aacf01f72c' }
-  given(:gist_url2) { 'https://gist.github.com/IFilonov/e1b5625045959a88a905ad8d5b9720d8' }
+  given(:any_url) { 'https://www.google.com/' }
+  given(:gist_url) { 'https://gist.github.com/IFilonov/4590d07e33fc2984c8cb92e9167590b8' }
   given(:question) { create(:question, user: user) }
+  given(:bad_url) { 'bad url' }
+  given(:gist_content) { 'Example gist content' }
 
   background do
     sign_in(user)
@@ -20,19 +22,19 @@ feature 'User can add links to question', %q{
     click_on 'Add link'
 
     link_names = all('.link-name')
-    link_names.first.fill_in(with: 'My gist')
-    link_names.last.fill_in(with: 'My gist2')
+    link_names.first.fill_in(with: 'My link')
+    link_names.last.fill_in(with: 'My gist')
 
     link_urls = all('.link-url')
-    link_urls.first.fill_in(with: gist_url)
-    link_urls.last.fill_in(with: gist_url2)
+    link_urls.first.fill_in(with: any_url)
+    link_urls.last.fill_in(with: gist_url)
   end
 
   scenario 'User adds link when asks question', js: true do
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
-    expect(page).to have_link 'My gist2', href: gist_url2
+    expect(page).to have_link 'My link', href: any_url
+    expect(page).to have_content gist_content
   end
 
   scenario 'User can remove links when asks question', js: true do
@@ -42,7 +44,17 @@ feature 'User can add links to question', %q{
 
     click_on 'Ask'
 
-    expect(page).to_not have_content 'My gist'
-    expect(page).to_not have_content 'My gist2'
+    expect(page).to_not have_content 'My link'
+    expect(page).to_not have_content gist_content
+  end
+
+  scenario 'User cannot adds bad link', js: true do
+    link_names = all('.link-name')
+    link_names.first.fill_in(with: 'Bad url')
+    link_urls = all('.link-url')
+    link_urls.first.fill_in(with: bad_url)
+    click_on 'Ask'
+
+    expect(page).to have_content 'Links url invalid format'
   end
 end
