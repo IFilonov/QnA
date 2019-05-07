@@ -35,6 +35,22 @@ feature 'User can create question', %q{
     expect(page).to have_link 'spec_helper.rb'
   end
 
+  scenario 'ask question with reward' do
+    sign_in(user)
+    visit new_question_path
+
+    fill_in 'Title', with: question.title
+    fill_in 'Body', with: question.body
+
+    fill_in 'Reward name', with: 'Reward for best answer'
+    attach_file 'image_file', Rails.root.join('app/assets/images/badge.jpg').to_s
+
+    click_on 'Ask'
+
+    expect(page).to have_content 'Reward for best answer'
+    expect(page).to have_css("img[src*='badge.jpg']")
+  end
+
   scenario 'asks a question by authenticated user with errors' do
     sign_in(user)
 

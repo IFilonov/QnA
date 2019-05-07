@@ -5,6 +5,8 @@
   = render 'form'
   .question_files
     = render 'files'
+  .question_rewards
+    = render 'rewards'
   .question_links
     = render 'links'
   - if current_user&.author_of?(@question)
