@@ -1,0 +1,5 @@
+h5= "Rewards for the best answers"
+- @rewards.each do |reward|
+  p= "Reward: #{reward.name}"
+  = image_tag reward.image_file, title: reward.name
+  p= "For the question: #{reward.question.title}"
