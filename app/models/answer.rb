@@ -15,6 +15,7 @@ class Answer < ApplicationRecord
     ActiveRecord::Base.transaction do
       question.answers.best.update_all(best: false)
       update!(best: true)
+      user.award!(question.reward) if question.reward.present?
     end
   end
 end

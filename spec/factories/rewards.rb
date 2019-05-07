@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :reward do
-    name { "MyString" }
-    file { "MyText" }
+    name { "reward" }
   end
 end
