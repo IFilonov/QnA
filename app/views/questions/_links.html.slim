@@ -1,0 +1,7 @@
+p Links:
+ul
+  - @question.links.each do |link|
+    - if link.gist?
+      = link.gist_content
+    - else
+      li= link_to link.name, link.url

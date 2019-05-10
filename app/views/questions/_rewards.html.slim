@@ -1,0 +1,4 @@
+- if @question.reward.present?
+  p Reward:
+  = image_tag @question.reward.image_file, title: @question.reward.name, size: "50x50"
+  p = @question.reward.name

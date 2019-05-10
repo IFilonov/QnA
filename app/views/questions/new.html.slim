@@ -10,5 +10,20 @@ h1 New question
   p
   = f.label :files
   = f.file_field :files, multiple: true, direct_upload: true
+  p Links:
+  #links
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    .links
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
   p
+  p Reward:
+  p
+    = f.fields_for :reward do |b|
+      p
+        = b.label :name, 'Reward name'
+        = b.text_field :name
+      p
+        = b.label :image_file
+        = b.file_field :image_file, id: 'image_file'
   = f.submit 'Ask'

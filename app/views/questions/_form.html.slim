@@ -7,3 +7,8 @@
   = f.label :files, id: 'question-file-label', class: 'hidden'
   = f.file_field :files, id: 'question-file-field', multiple: true, class: 'hidden', direct_upload: true
   = f.submit 'Save', id: 'question-update-submit', class: 'hidden'
+  div id = 'Links' class = 'hidden'
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    .links
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'

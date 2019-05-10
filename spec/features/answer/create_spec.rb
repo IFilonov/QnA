@@ -6,7 +6,7 @@ feature 'User can create answer', %q{
   I'd like to answer the question
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given!(:question) { create(:question, user: user) }
 
   scenario 'create an answer', js: true do
     sign_in(user)
@@ -23,10 +23,9 @@ feature 'User can create answer', %q{
     visit question_path(question)
 
     fill_in 'Body', with: "Answer body"
+    attach_file 'answer-file-field', ["#{Rails.root}/spec/rails_helper.rb","#{Rails.root}/spec/spec_helper.rb"]
 
-    attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb","#{Rails.root}/spec/spec_helper.rb"]
     click_on 'Answer'
-
     expect(page).to have_link 'rails_helper.rb'
     expect(page).to have_link 'spec_helper.rb'
   end
@@ -42,10 +41,9 @@ feature 'User can create answer', %q{
     expect(page).to have_content "Body can't be blank"
   end
 
-  scenario 'make an answer by unauthenticated user with errors' do
+  scenario 'make an answer by unauthenticated user with errors', js: true do
     visit question_path(question)
-    click_on 'Answer'
 
-    expect(page).to have_content "You need to sign in or sign up before continuing"
+    expect(page).not_to have_link "Answer"
   end
 end

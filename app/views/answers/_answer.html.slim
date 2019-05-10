@@ -2,6 +2,14 @@
 div class = "answer-#{answer.id}"
   div class = "answer-#{answer.id}-errors"
   p= answer.body
+  .links
+  p Links:
+  ul
+    - answer.links.each do |link|
+      - if link.gist?
+        = link.gist_content
+      - else
+        li= link_to link.name, link.url
   .answer_files
     = render partial: "/answers/files", locals: { answer: answer }
   .best
@@ -10,14 +18,19 @@ div class = "answer-#{answer.id}"
         span= "Best"
         = check_box_tag("best-checkbox#{answer.id}", answer.id, answer.best, { autocomplete: "off" } )
   br
+  = render 'shared/errors', resource: answer
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-    = render 'shared/errors', resource: answer
     = f.label :body, 'Your answer'
     = f.text_area :body
     p
     = f.label :files, id: 'answer-file-label'
     = f.file_field :files, id: 'answer-file-field', multiple: true, direct_upload: true
+    p Links:
     p
+      = f.fields_for :links do |l|
+        = render 'shared/link_fields', f: l
+      .links
+        = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
     = f.submit 'Save'
   - if answer.persisted?
     - if current_user&.author_of?(answer)
